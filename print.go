@@ -119,12 +119,12 @@ func printBranch(node TreeNode, prefix []bool, below bool) {
 	copy(np, prefix)
 	np[pl] = below
 	printBranch(node.Left(), np, false)
-	printValue(node.Value(), prefix, below)
+	printValue(node, prefix, below)
 	np[pl] = !below
 	printBranch(node.Right(), np, true)
 }
 
-func printValue(value string, prefix []bool, below bool) {
+func printValue(node TreeNode, prefix []bool, below bool) {
 	for _, b := range prefix {
 		if b {
 			fmt.Print("   │")
@@ -137,18 +137,18 @@ func printValue(value string, prefix []bool, below bool) {
 	} else {
 		fmt.Print("   ╭── ")
 	}
-	fmt.Println(value)
+	fmt.Println(node.Value())
 }
 
 type widthNode struct {
-	value int
+	node  TreeNode
 	width int
 	left  *widthNode
 	right *widthNode
 }
 
 func (n *widthNode) Value() string {
-	return fmt.Sprint(n.value, n.width)
+	return fmt.Sprint(n.node.Value(), n.width)
 }
 
 func (n *widthNode) Left() TreeNode {
@@ -168,17 +168,17 @@ func calcWidth(root *Node) *widthNode {
 	return node
 }
 
-func widthHelper(node *Node, minLeft, minRight int) (int, *widthNode) {
-	if node == nil {
+func widthHelper(node TreeNode, minLeft, minRight int) (int, *widthNode) {
+	if node.Leaf() {
 		return 0, nil
 	}
-	vl := len(fmt.Sprint(node.value))
+	vl := len(node.Value())
 	vw := vl + vl%2
 	hw := vw / 2
-	lw, ln := widthHelper(node.left, 0, hw+1)
-	rw, rn := widthHelper(node.right, hw+1, 0)
+	lw, ln := widthHelper(node.Left(), 0, hw+1)
+	rw, rn := widthHelper(node.Right(), hw+1, 0)
 	w := max(minLeft, lw) + 1 + max(minRight, rw)
-	return w, &widthNode{node.value, w, ln, rn}
+	return w, &widthNode{node, w, ln, rn}
 }
 
 func max(a, b int) int {
@@ -197,7 +197,7 @@ func PrintWide(root *widthNode) {
 }
 
 func printWideHelper(node *widthNode, leftMargin, level int, lines [][]byte) [][]byte {
-	if node == nil {
+	if node.Leaf() {
 		return lines
 	}
 	var line []byte
@@ -213,7 +213,7 @@ func printWideHelper(node *widthNode, leftMargin, level int, lines [][]byte) [][
 
 	// hw := node.w / 2
 
-	line = append(line, fmt.Sprint(node.value)...)
+	line = append(line, fmt.Sprint(node.Value())...)
 	lines[level] = line
 
 	lines = printWideHelper(node.left, leftMargin, level+1, lines)
