@@ -1,4 +1,4 @@
-package main
+package bintree
 
 import (
 	"fmt"
@@ -230,25 +230,25 @@ func printWideHelper(node *widthNode, leftMargin, level int, lines [][]byte) [][
 	return lines
 }
 
-func main() {
-	tree := BuildSorted([]int{-10, -3, -1, 0, 2, 4, 5, 6, 10, 20})
-	fmt.Println(tree)
-	fmt.Println(InOrder(tree))
-
-	Print(tree)
-
-	path := Path(tree, 6)
-	fmt.Println(path)
-
-	left, right := Split(path)
-	fmt.Println(left)
-	fmt.Println(right)
-	fmt.Println(InOrder(left), InOrder(right))
-
-	Print(left)
-	Print(right)
-
-	wt := calcWidth(left)
-	Print(wt)
-	PrintWide(wt)
-}
+//func main() {
+//	tree := BuildSorted([]int{-10, -3, -1, 0, 2, 4, 5, 6, 10, 20})
+//	fmt.Println(tree)
+//	fmt.Println(InOrder(tree))
+//
+//	Print(tree)
+//
+//	path := Path(tree, 6)
+//	fmt.Println(path)
+//
+//	left, right := Split(path)
+//	fmt.Println(left)
+//	fmt.Println(right)
+//	fmt.Println(InOrder(left), InOrder(right))
+//
+//	Print(left)
+//	Print(right)
+//
+//	wt := calcWidth(left)
+//	Print(wt)
+//	PrintWide(wt)
+//}
